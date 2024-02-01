@@ -376,6 +376,7 @@ class XMLSecurityKey {
         if (! empty($this->cryptParams['digest'])) {
             $algo = $this->cryptParams['digest'];
         }
+
         return openssl_verify ($data, $signature, $this->key, $algo);
     }
 
@@ -407,6 +408,7 @@ class XMLSecurityKey {
     }
 
     public function verifySignature($data, $signature) {
+
         switch ($this->cryptParams['library']) {
             case 'openssl':
                 return $this->verifyOpenSSL($data, $signature);
@@ -1083,6 +1085,7 @@ class XMLSecurityDSig {
         if (empty($sigValue)) {
             throw new Exception("Unable to locate SignatureValue");
         }
+
         return $objKey->verifySignature($this->signedInfo, base64_decode($sigValue));
     }
 

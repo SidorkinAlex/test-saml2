@@ -1405,6 +1405,7 @@ class OneLogin_Saml2_Utils
      */
     public static function validateSign($xml, $cert = null, $fingerprint = null, $fingerprintalg = 'sha1', $xpath = null, $multiCerts = null)
     {
+
         if ($xml instanceof DOMDocument) {
             $dom = clone $xml;
         } else if ($xml instanceof DOMElement) {
@@ -1464,6 +1465,7 @@ class OneLogin_Saml2_Utils
         foreach ($multiCerts as $cert) {
             if (!empty($cert)) {
                 $objKey->loadKey($cert, false, true);
+
                 if ($objXMLSecDSig->verify($objKey) === 1) {
                     $valid = true;
                     break;

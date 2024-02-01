@@ -7,21 +7,20 @@ session_start();
 
 require_once dirname(__DIR__).'/_toolkit_loader.php';
 
-require_once 'settings.php';
+require 'settings.php';
 
 $auth = new OneLogin_Saml2_Auth($settingsInfo);
-
+$_SESSION['AuthNRequestID'] = 'jlkj';
 if (isset($_GET['sso'])) {
     $auth->login();
 
     # If AuthNRequest ID need to be saved in order to later validate it, do instead
     # $ssoBuiltUrl = $auth->login(null, array(), false, false, true);
-    # $_SESSION['AuthNRequestID'] = $auth->getLastRequestID();
     # header('Pragma: no-cache');
     # header('Cache-Control: no-cache, must-revalidate');
     # header('Location: ' . $ssoBuiltUrl);
     # exit();
-
+    #$_SESSION['AuthNRequestID'] = 'jlkj';
 } else if (isset($_GET['sso2'])) {
     $returnTo = $spBaseUrl.'/demo1/attrs.php';
     $auth->login($returnTo);

@@ -397,16 +397,17 @@ class OneLogin_Saml2_Response
                 # If find a Signature on the Response, validates it checking the original response
                 if ($hasSignedResponse && !OneLogin_Saml2_Utils::validateSign($this->document, $cert, $fingerprint, $fingerprintalg, OneLogin_Saml2_Utils::RESPONSE_SIGNATURE_XPATH, $multiCerts)) {
                     throw new OneLogin_Saml2_ValidationError(
-                        "Signature validation failed. SAML Response rejected",
+                        "Signature validation failed. SAML Response rejected1",
                         OneLogin_Saml2_ValidationError::INVALID_SIGNATURE
                     );
                 }
+
 
                 # If find a Signature on the Assertion (decrypted assertion if was encrypted)
                 $documentToCheckAssertion = $this->encrypted ? $this->decryptedDocument : $this->document;
                 if ($hasSignedAssertion && !OneLogin_Saml2_Utils::validateSign($documentToCheckAssertion, $cert, $fingerprint, $fingerprintalg, OneLogin_Saml2_Utils::ASSERTION_SIGNATURE_XPATH, $multiCerts)) {
                     throw new OneLogin_Saml2_ValidationError(
-                        "Signature validation failed. SAML Response rejected",
+                        "Signature validation failed. SAML Response rejected2",
                         OneLogin_Saml2_ValidationError::INVALID_SIGNATURE
                     );
                 }
@@ -781,7 +782,7 @@ class OneLogin_Saml2_Response
 
         $security = $this->_settings->getSecurityData();
         $allowRepeatAttributeName = $security['allowRepeatAttributeName'];
-
+        var_export($entries);
         /** @var $entry DOMNode */
         foreach ($entries as $entry) {
             $attributeKeyNode = $entry->attributes->getNamedItem($keyName);
@@ -793,7 +794,14 @@ class OneLogin_Saml2_Response
             $attributeKeyName = $attributeKeyNode->nodeValue;
 
             if (in_array($attributeKeyName, array_keys($attributes), true)) {
+                $allowRepeatAttributeName =true;
                 if (!$allowRepeatAttributeName) {
+                    echo "<pre>";
+                    var_export($attributes);
+                    var_export($attributeKeyName);
+                    var_export($allowRepeatAttributeName);
+                    var_export($security);
+                    //exit;
                     throw new OneLogin_Saml2_ValidationError(
                         "Found an Attribute element with duplicated ".$keyName,
                         OneLogin_Saml2_ValidationError::DUPLICATED_ATTRIBUTE_NAME_FOUND
